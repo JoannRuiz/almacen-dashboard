@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Almacén Central — Panel de inventario</title>
+  <meta name="description" content="Panel administrativo de inventario: stock, movimientos y alertas de Almacén Central.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Saltar al contenido principal</a>
+
+  <div class="dashboard" id="dashboard">
+
+    <!-- ===== HEADER ===== -->
+    <header class="topbar" role="banner">
+      <button
+        class="sidebar-toggle"
+        id="sidebarToggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="sidebar"
+        aria-label="Abrir menú de navegación">
+        <span class="sidebar-toggle__bar" aria-hidden="true"></span>
+        <span class="sidebar-toggle__bar" aria-hidden="true"></span>
+        <span class="sidebar-toggle__bar" aria-hidden="true"></span>
+      </button>
+
+      <div class="topbar__title">
+        <span class="topbar__eyebrow">Panel de control</span>
+        <h1>Bodega Norte · Inventario general</h1>
+      </div>
+
+      <div class="topbar__actions">
+        <label class="search" for="searchInput">
+          <svg class="search__icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <circle cx="8.5" cy="8.5" r="6" stroke="currentColor" stroke-width="1.6"/>
+            <line x1="13" y1="13" x2="18" y2="18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <span class="visually-hidden">Buscar producto o SKU</span>
+          <input type="search" id="searchInput" placeholder="Buscar producto o SKU…">
+        </label>
+
+        <button class="avatar-btn" type="button" aria-label="Cuenta de María Gómez, encargada de bodega">
+          <span class="avatar" aria-hidden="true">MG</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Navegación principal">
+      <div class="sidebar__brand">
+        <span class="sidebar__mark" aria-hidden="true">AC</span>
+        <span class="sidebar__name">Almacén<br>Central</span>
+      </div>
+
+      <ul class="nav-list">
+        <li>
+          <a class="nav-list__link is-active" href="#main" aria-current="page">
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2.5" y="2.5" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="11.5" y="2.5" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="2.5" y="11.5" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="11.5" y="11.5" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
+            <span>Resumen</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-list__link" href="#tabla-movimientos">
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 6h12M4 10h12M4 14h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <span>Productos</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-list__link" href="#tabla-movimientos">
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3v14M4 8l6-5 6 5M4 12l6 5 6-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Movimientos</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-list__link" href="#">
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 15V9l7-5 7 5v6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M7 15v-4h6v4" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+            <span>Proveedores</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-list__link" href="#grafico-categorias">
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 16V8M10 16V4M16 16v-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <span>Reportes</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-list__link" href="#">
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="2.4" stroke="currentColor" stroke-width="1.5"/><path d="M10 3v2M10 15v2M3 10h2M15 10h2M5.3 5.3l1.4 1.4M13.3 13.3l1.4 1.4M14.7 5.3l-1.4 1.4M6.7 13.3l-1.4 1.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>Configuración</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar__footer-note">
+        <p>Última sincronización</p>
+        <p class="sidebar__footer-time">Hoy, 08:42 a.m.</p>
+      </div>
+    </aside>
+
+    <!-- ===== MAIN ===== -->
+    <main class="main" id="main" role="main" tabindex="-1">
+
+      <!-- Tarjetas de resumen -->
+      <section class="summary" aria-labelledby="summary-heading">
+        <h2 id="summary-heading" class="visually-hidden">Resumen general del inventario</h2>
+
+        <article class="stat-card">
+          <p class="stat-card__label">Productos activos</p>
+          <p class="stat-card__value">1,284</p>
+          <p class="stat-card__delta stat-card__delta--up">+18 esta semana</p>
+        </article>
+
+        <article class="stat-card stat-card--alert">
+          <p class="stat-card__label">Con stock bajo</p>
+          <p class="stat-card__value">23</p>
+          <p class="stat-card__delta stat-card__delta--down">Revisar antes del viernes</p>
+        </article>
+
+        <article class="stat-card">
+          <p class="stat-card__label">Movimientos hoy</p>
+          <p class="stat-card__value">142</p>
+          <p class="stat-card__delta">96 entradas · 46 salidas</p>
+        </article>
+
+        <article class="stat-card">
+          <p class="stat-card__label">Valor total en bodega</p>
+          <p class="stat-card__value">$318.4M</p>
+          <p class="stat-card__delta stat-card__delta--up">+4.1% vs. mes anterior</p>
+        </article>
+      </section>
+
+      <div class="main-grid">
+
+        <!-- Gráfico de stock por categoría -->
+        <section class="panel chart-panel" id="grafico-categorias" aria-labelledby="chart-heading">
+          <div class="panel__head">
+            <h2 id="chart-heading">Unidades en stock por categoría</h2>
+            <p class="panel__hint">Comparado con el punto de reorden</p>
+          </div>
+
+          <ul class="bar-chart" role="img" aria-label="Gráfico de barras: unidades en stock por categoría de producto. Herramientas 210, Electrónica 640, Hogar 480, Ropa 890, Oficina 150 unidades.">
+            <li class="bar-chart__row">
+              <span class="bar-chart__label">Herramientas</span>
+              <span class="bar-chart__track"><span class="bar-chart__fill" style="--value: 24%"></span></span>
+              <span class="bar-chart__number">210</span>
+            </li>
+            <li class="bar-chart__row">
+              <span class="bar-chart__label">Electrónica</span>
+              <span class="bar-chart__track"><span class="bar-chart__fill" style="--value: 72%"></span></span>
+              <span class="bar-chart__number">640</span>
+            </li>
+            <li class="bar-chart__row">
+              <span class="bar-chart__label">Hogar</span>
+              <span class="bar-chart__track"><span class="bar-chart__fill" style="--value: 54%"></span></span>
+              <span class="bar-chart__number">480</span>
+            </li>
+            <li class="bar-chart__row">
+              <span class="bar-chart__label">Ropa</span>
+              <span class="bar-chart__track"><span class="bar-chart__fill bar-chart__fill--accent" style="--value: 100%"></span></span>
+              <span class="bar-chart__number">890</span>
+            </li>
+            <li class="bar-chart__row">
+              <span class="bar-chart__label">Oficina</span>
+              <span class="bar-chart__track"><span class="bar-chart__fill" style="--value: 17%"></span></span>
+              <span class="bar-chart__number">150</span>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Alertas de stock bajo -->
+        <section class="panel alert-panel" aria-labelledby="alert-heading">
+          <div class="panel__head">
+            <h2 id="alert-heading">Alertas de reposición</h2>
+            <p class="panel__hint">Bajo el punto de reorden</p>
+          </div>
+
+          <ul class="alert-list">
+            <li class="alert-item">
+              <div class="alert-item__info">
+                <p class="alert-item__name">Guantes de nitrilo caja x100</p>
+                <p class="alert-item__sku">SKU 3391-G</p>
+              </div>
+              <span class="badge badge--danger">6 uds.</span>
+            </li>
+            <li class="alert-item">
+              <div class="alert-item__info">
+                <p class="alert-item__name">Cinta métrica 5m</p>
+                <p class="alert-item__sku">SKU 1187-C</p>
+              </div>
+              <span class="badge badge--danger">9 uds.</span>
+            </li>
+            <li class="alert-item">
+              <div class="alert-item__info">
+                <p class="alert-item__name">Bombillo LED 9W</p>
+                <p class="alert-item__sku">SKU 5502-B</p>
+              </div>
+              <span class="badge badge--warning">14 uds.</span>
+            </li>
+            <li class="alert-item">
+              <div class="alert-item__info">
+                <p class="alert-item__name">Cargador USB-C 20W</p>
+                <p class="alert-item__sku">SKU 2240-D</p>
+              </div>
+              <span class="badge badge--warning">17 uds.</span>
+            </li>
+          </ul>
+
+          <a class="panel__link" href="#tabla-movimientos">Ver todos los productos en riesgo</a>
+        </section>
+
+        <!-- Tabla de movimientos recientes -->
+        <section class="panel table-panel" id="tabla-movimientos" aria-labelledby="table-heading">
+          <div class="panel__head">
+            <h2 id="table-heading">Movimientos recientes</h2>
+            <p class="panel__hint">Últimas 24 horas</p>
+          </div>
+
+          <div class="table-scroll">
+            <table>
+              <caption class="visually-hidden">Movimientos de inventario recientes con producto, SKU, tipo, cantidad, fecha y responsable</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Producto</th>
+                  <th scope="col">SKU</th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Fecha</th>
+                  <th scope="col">Responsable</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td data-label="Producto">Guantes de nitrilo caja x100</td>
+                  <td data-label="SKU">3391-G</td>
+                  <td data-label="Tipo"><span class="pill pill--out">Salida</span></td>
+                  <td data-label="Cantidad">−24</td>
+                  <td data-label="Fecha">03 sep, 07:12</td>
+                  <td data-label="Responsable">J. Ramírez</td>
+                </tr>
+                <tr>
+                  <td data-label="Producto">Taladro inalámbrico 18V</td>
+                  <td data-label="SKU">7743-T</td>
+                  <td data-label="Tipo"><span class="pill pill--in">Entrada</span></td>
+                  <td data-label="Cantidad">+40</td>
+                  <td data-label="Fecha">03 sep, 06:58</td>
+                  <td data-label="Responsable">M. Gómez</td>
+                </tr>
+                <tr>
+                  <td data-label="Producto">Bombillo LED 9W</td>
+                  <td data-label="SKU">5502-B</td>
+                  <td data-label="Tipo"><span class="pill pill--out">Salida</span></td>
+                  <td data-label="Cantidad">−32</td>
+                  <td data-label="Fecha">02 sep, 18:20</td>
+                  <td data-label="Responsable">J. Ramírez</td>
+                </tr>
+                <tr>
+                  <td data-label="Producto">Chaqueta impermeable talla M</td>
+                  <td data-label="SKU">9021-R</td>
+                  <td data-label="Tipo"><span class="pill pill--in">Entrada</span></td>
+                  <td data-label="Cantidad">+120</td>
+                  <td data-label="Fecha">02 sep, 15:05</td>
+                  <td data-label="Responsable">D. Torres</td>
+                </tr>
+                <tr>
+                  <td data-label="Producto">Cargador USB-C 20W</td>
+                  <td data-label="SKU">2240-D</td>
+                  <td data-label="Tipo"><span class="pill pill--out">Salida</span></td>
+                  <td data-label="Cantidad">−18</td>
+                  <td data-label="Fecha">02 sep, 11:40</td>
+                  <td data-label="Responsable">M. Gómez</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer" role="contentinfo">
+      <p>Almacén Central — Sistema interno de gestión de inventario</p>
+      <p>Bodega Norte · Actualizado automáticamente cada 15 minutos</p>
+    </footer>
+
+  </div>
+
+  <div class="sidebar-scrim" id="sidebarScrim" hidden></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
